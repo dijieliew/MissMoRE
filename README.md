@@ -92,11 +92,12 @@ images/image2.jpg,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0
 
 ---
 
-### Dependencies
+### Core Dependencies
 
 * torch                         2.11.0+cu126
 * albumentationsx               2.3.1
 * opencv-python-headless        4.12.0.88
+* transformers                  4.57.3
 
 ---
 
