@@ -1,2 +1,75 @@
-# MissMoRE
-Repository for MissMoRE implementation.
+This repository provides the core PyTorch implementation for **MissMoRE** (*a multi-gate recursion network for automated dental charting from missing teeth classification on panoramic radiographs*).
+
+## Repository Overview
+
+This project includes modular implementations designed to be easily adapted for custom training pipelines, $K$-fold cross-validation, and fine-tuning:
+
+1. **`MissMoRE.ipynb`**: Complete PyTorch module implementation of the MissMoRE architecture, including multi-gate recursion mechanisms and classification heads.
+2. **`Dataloaders.ipynb`**: Data loading and preprocessing pipeline featuring custom ROI cropping logic, image transformations, and dataset augmentations.
+
+---
+
+## Getting Started & Usage
+
+The code provided in this repository is modular and task-agnostic. You can easily integrate both the model architecture and dataloader into your own experimental workflows:
+
+### 1. Model Adaptation
+Import or load the `MissMoRE` module directly into your training script:
+```python
+# Load model architecture from MissMoRE.ipynb
+model = MissMoRE(num_classes=..., in_channels=3)
+
+
+```
+
+---
+
+### Dataset Structure
+
+To run the implementation on your own dataset, prepare a CSV file (`Dataset.csv`) with the following columns:
+
+* **`ImagePaths`**: Relative or absolute path to each panoramic radiograph image.
+* **FDI Tooth Columns (28 columns total)**: Individual binary indicators (`1` = missing teeth, `0` = present teeth) for each permanent tooth:
+  * **Upper-Right (Quadrant 1)**: `17`, `16`, `15`, `14`, `13`, `12`, `11`
+  * **Upper-Left (Quadrant 2)**: `21`, `22`, `23`, `24`, `25`, `26`, `27`
+  * **Lower-Left (Quadrant 3)**: `31`, `32`, `33`, `34`, `35`, `36`, `37`
+  * **Lower-Right (Quadrant 4)**: `41`, `42`, `43`, `44`, `45`, `46`, `47`
+
+*Note: Third molars (`18`, `28`, `38`, `48`) are excluded.*
+
+#### Quadrant Label Arrays
+When loaded via `Dataloaders.ipynb`, these 28 columns are automatically grouped into **7-dimensional binary arrays** per quadrant:
+
+* **Upper-Right**: `[17, 16, 15, 14, 13, 12, 11]`
+* **Upper-Left**: `[21, 22, 23, 24, 25, 26, 27]`
+* **Lower-Left**: `[31, 32, 33, 34, 35, 36, 37]`
+* **Lower-Right**: `[41, 42, 43, 44, 45, 46, 47]`
+
+#### Example `Dataset.csv`
+```csv
+ImagePaths,17,16,15,14,13,12,11,21,22,23,24,25,26,27,31,32,33,34,35,36,37,41,42,43,44,45,46,47
+images/image1.jpg,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+images/image2.jpg,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0
+```
+
+---
+
+### Dependencies
+
+* torch                         2.11.0+cu126
+* albumentationsx               2.3.1
+* opencv-python-headless        4.12.0.88
+
+---
+
+### Citation
+
+If you use this code or build upon it, please cite our paper:
+```
+pending citation
+```
+
+---
+
+### License
+This project is licensed under the Apache-2.0 License - see the LICENSE file in the repository for details.
