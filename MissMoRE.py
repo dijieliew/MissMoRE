@@ -157,12 +157,12 @@ class MMoRE(nn.Module):
         return final_outputs
 
 class MissMoRE(torch.nn.Module):
-    def __init__(self, model_type, num_labels = 7):
+    def __init__(self, model_type, num_labels=7, num_experts=3):
         super(MissMoRE, self).__init__()
 
         self.model = AutoModel.from_pretrained(model_type, image_size = (307, 614), output_attentions = False, hidden_act = 'gelu', output_hidden_states = True, ignore_mismatched_sizes=True)
         
-        MMoRE_module = MMoRE(dim=171, gate_dim=256, hidden_dim=768, num_tasks=num_labels, num_experts=3) 
+        MMoRE_module = MMoRE(dim=171, gate_dim=256, hidden_dim=768, num_tasks=num_labels, num_experts=num_experts) # input dim [B, 1024, 171] 
         self.MMoRE = torch.compile(
             MMoRE_module, 
             mode='default', 
@@ -172,7 +172,7 @@ class MissMoRE(torch.nn.Module):
         
     def forward(self, quadrant_pixels, interpolate_pos_encoding=True):
 
-        last_hs = self.model(quadrant_pixels)["hidden_states"][-1]
-        last_hs = torch.flatten(last_hs, -2, -1).contiguous()
+        last_hs = self.model(quadrant_pixels)["hidden_states"][-1] 
+        last_hs = torch.flatten(last_hs, -2, -1).contiguous() 
         output = self.MMoRE(last_hs)
         return torch.cat(output, dim=1)
