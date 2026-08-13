@@ -4,8 +4,8 @@ This repository provides the core PyTorch implementation for **MissMoRE** (*a mu
 
 This project includes modular implementations designed to be easily adapted for custom training pipelines, $K$-fold cross-validation, and fine-tuning:
 
-1. **`MissMoRE.ipynb`**: Complete PyTorch module implementation of the MissMoRE architecture, including multi-gate recursion mechanisms and classification heads.
-2. **`Dataloaders.ipynb`**: Data loading and preprocessing pipeline featuring custom ROI cropping logic, image transformations, and dataset augmentations.
+1. **`MissMoRE.py`**: Complete PyTorch module implementation of the MissMoRE architecture, including multi-gate recursion mechanisms and classification heads.
+2. **`Dataloaders.py`**: Data loading and preprocessing pipeline featuring custom ROI cropping logic, image transformations, and dataset augmentations.
 
 ---
 
@@ -16,17 +16,18 @@ The code provided in this repository is modular and task-agnostic. You can easil
 ### 1. Model Adaptation
 Import or load the `MissMoRE` module directly into your training script:
 ```python
+
 # Load model architecture from MissMoRE.ipynb
 model = MissMoRE(num_classes=..., in_channels=3)
 
-
 ```
 
-### 1. DataModule Instantiation
+### 2. DataModule Instantiation
 
 The data loading pipeline is modularized into dedicated PyTorch DataModules for training and validation (`MissingTeethTrainDM` and `MissingTeethValDM`), supporting quadrant-based ROI selection, custom augmentations, and train/val splitting.
 
 ```python
+
 import pandas as pd
 from dataloaders import MissingTeethTrainDM, MissingTeethValDM,train_augmentations, validation augmentations
 
@@ -57,11 +58,12 @@ validation_datamodule = MissingTeethValDM(
     roi=roi, 
     split_pct=split_pct
 )
+
 ```
 
 ---
 
-### Dataset Structure
+### 3. Dataset Structure
 
 To run the implementation on your own dataset, prepare a CSV file (`Dataset.csv`) with the following columns:
 
