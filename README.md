@@ -22,6 +22,43 @@ model = MissMoRE(num_classes=..., in_channels=3)
 
 ```
 
+### 1. DataModule Instantiation
+
+The data loading pipeline is modularized into dedicated PyTorch DataModules for training and validation (`MissingTeethTrainDM` and `MissingTeethValDM`), supporting quadrant-based ROI selection, custom augmentations, and train/val splitting.
+
+```python
+import pandas as pd
+from dataloaders import MissingTeethTrainDM, MissingTeethValDM,train_augmentations, validation augmentations
+
+# 1. Load your dataset metadata
+df = pd.read_csv("Dataset.csv")
+
+# 2. Select Region of Interest (ROI) quadrant:
+# 'q1': Upper-Right [17, 16, 15, 14, 13, 12, 11]
+# 'q2': Upper-Left  [21, 22, 23, 24, 25, 26, 27]
+# 'q3': Lower-Left  [31, 32, 33, 34, 35, 36, 37]
+# 'q4': Lower-Right [41, 42, 43, 44, 45, 46, 47]
+roi = 'q1'
+
+# 3. Set train/validation split percentage (default used in paper: 0.6 / 60%)
+split_pct = 0.6
+
+# 4. Initialize DataModules
+train_datamodule = MissingTeethTrainDM(
+    df=df, 
+    transform=train_augmentations, 
+    roi=roi, 
+    split_pct=split_pct
+)
+
+validation_datamodule = MissingTeethValDM(
+    df=df, 
+    transform=validation_augmentations, 
+    roi=roi, 
+    split_pct=split_pct
+)
+```
+
 ---
 
 ### Dataset Structure
