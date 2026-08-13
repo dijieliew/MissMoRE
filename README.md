@@ -14,10 +14,10 @@ This project includes modular implementations designed to be easily adapted for 
 The code provided in this repository is modular and task-agnostic. You can easily integrate both the model architecture and dataloader into your own experimental workflows:
 
 ### 1. Model Adaptation
-Import or load the `MissMoRE` module directly into your training script:
+Import or load the `MissMoRE` module directly into your training script with "facebook/convnext-base-224-22k-1k" or any other models you wish to experiemnt with:
 ```python
 
-model = MissMoRE()
+model = MissMoRE(model="facebook/convnext-base-224-22k-1k")
 
 ```
 
