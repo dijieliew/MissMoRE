@@ -17,8 +17,7 @@ The code provided in this repository is modular and task-agnostic. You can easil
 Import or load the `MissMoRE` module directly into your training script:
 ```python
 
-# Load model architecture from MissMoRE.ipynb
-model = MissMoRE(num_classes=..., in_channels=3)
+model = MissMoRE()
 
 ```
 
